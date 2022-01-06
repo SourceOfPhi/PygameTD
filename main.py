@@ -12,11 +12,20 @@ class Grid():
         self.cell_cnt_x = int(SCREEN_SIZE[0] / cell_width)
         self.cell_cnt_y = int(SCREEN_SIZE[1] / cell_width)
 
+        self.blocked_cells: list[tuple[int,int]] = []
+
     def pos_to_cell(self, pos: tuple[int, int]) -> tuple[int, int]:
         return (int(pos[0] / self.cell_width), int(pos[1] / self.cell_width))
 
     def cell_to_pos(self, cell_pos: tuple[int, int]) -> tuple[int, int]:
         return(cell_pos[0] * self.cell_width, cell_pos[1] * self.cell_width)
+
+    def block_on_grid(self, cell_pos: tuple[int,int]):
+        if not cell_pos in self.blocked_cells:
+            self.blocked_cells.append(cell_pos)
+
+    def is_blocked(self, cell_pos: tuple[int,int]):
+        return cell_pos in self.blocked_cells
 
     def draw(self, screen: pygame.Surface):
         for y in range(self.cell_cnt_y):
@@ -56,10 +65,7 @@ def main():
 
     turret_sprite = pygame.image.load(Path('./images/turretPlaceholder.png'))
 
-    turret1 = Turret(turret_sprite, (100, 100), grid)
-
     game_objects = []
-    game_objects.append(turret1)
 
     # create a surface on screen that has the size of 240 x 180
     screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -82,8 +88,11 @@ def main():
                 mouse_pos = pygame.mouse.get_pos()
                 mouse_pos_ingrid = grid.pos_to_cell(mouse_pos)
                 # TODO: if on this pos should be built
-                turret = Turret(turret_sprite, mouse_pos_ingrid, grid)
-                game_objects.append(turret)
+                if not grid.is_blocked(mouse_pos_ingrid):
+                    turret = Turret(turret_sprite, mouse_pos_ingrid, grid)
+                    game_objects.append(turret)
+                    grid.block_on_grid(mouse_pos_ingrid)
+                    print(game_objects)
 
         # TODO: Update all game objects
 
