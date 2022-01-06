@@ -1,18 +1,24 @@
 import pygame
 from abc import ABC, abstractmethod
 from pathlib import Path
+from levelparser import Level, LevelParser
 
 # --- global constants ---
 SCREEN_SIZE = (800, 400)
 
 
 class Grid():
-    def __init__(self, cell_width: int) -> None:
+    def __init__(self, cell_width: int, level: Level) -> None:
         self.cell_width = cell_width
-        self.cell_cnt_x = int(SCREEN_SIZE[0] / cell_width)
-        self.cell_cnt_y = int(SCREEN_SIZE[1] / cell_width)
+        self.cell_cnt_x = level.col_cnt  # int(SCREEN_SIZE[0] / cell_width)
+        self.cell_cnt_y = level.row_cnt  # int(SCREEN_SIZE[1] / cell_width)
 
-        self.blocked_cells: list[tuple[int,int]] = []
+        self.blocked_cells: list[tuple[int, int]] = level.blocked_positions
+        print(self.blocked_cells)
+
+        global SCREEN_SIZE
+        SCREEN_SIZE = (cell_width * self.cell_cnt_x,
+                       cell_width * self.cell_cnt_y)
 
     def pos_to_cell(self, pos: tuple[int, int]) -> tuple[int, int]:
         return (int(pos[0] / self.cell_width), int(pos[1] / self.cell_width))
@@ -20,11 +26,11 @@ class Grid():
     def cell_to_pos(self, cell_pos: tuple[int, int]) -> tuple[int, int]:
         return(cell_pos[0] * self.cell_width, cell_pos[1] * self.cell_width)
 
-    def block_on_grid(self, cell_pos: tuple[int,int]):
+    def block_on_grid(self, cell_pos: tuple[int, int]):
         if not cell_pos in self.blocked_cells:
             self.blocked_cells.append(cell_pos)
 
-    def is_blocked(self, cell_pos: tuple[int,int]):
+    def is_blocked(self, cell_pos: tuple[int, int]):
         return cell_pos in self.blocked_cells
 
     def draw(self, screen: pygame.Surface):
@@ -61,7 +67,9 @@ def main():
     # initialize the pygame module
     pygame.init()
 
-    grid = Grid(cell_width=50)
+    lvl = LevelParser().parse_txt("./maps/test1.txt")
+
+    grid = Grid(cell_width=50, level=lvl)
 
     turret_sprite = pygame.image.load(Path('./images/turretPlaceholder.png'))
 
