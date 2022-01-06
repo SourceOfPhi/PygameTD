@@ -30,7 +30,7 @@ class LevelParser():
                 for col, char in enumerate(line):
                     if(char.isdigit()):
                         enemy_path_cell_positions[int(char)-lowest_num] = (col, row)
-                    elif(char == '#' or char.isdigit()):
+                    if(char == '#' or char.isdigit()):
                         blocked_cell_positions.append((col, row))
 
             return Level(row_cnt, col_cnt, enemy_path_cell_positions, blocked_cell_positions)
