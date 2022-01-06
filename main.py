@@ -14,6 +14,7 @@ class Grid():
         self.cell_cnt_y = level.row_cnt  # int(SCREEN_SIZE[1] / cell_width)
 
         self.blocked_cells: list[tuple[int, int]] = level.blocked_positions
+        self.path_cells = level.blocked_positions
         print(self.blocked_cells)
 
         global SCREEN_SIZE
@@ -36,9 +37,14 @@ class Grid():
     def draw(self, screen: pygame.Surface):
         for y in range(self.cell_cnt_y):
             for x in range(self.cell_cnt_x):
+                width = 1
+                color = (0,0,0)
+                if (x,y) in self.path_cells:
+                    width = 0
+                    color = (150,150,150)
                 cell_pos = (x * self.cell_width, y * self.cell_width)
-                pygame.draw.rect(screen, (0, 0, 0),
-                                 pygame.Rect(cell_pos, (self.cell_width, self.cell_width)), width=1)
+                pygame.draw.rect(screen, color,
+                                 pygame.Rect(cell_pos, (self.cell_width, self.cell_width)), width=width)
 
 
 class GameObject(ABC):
@@ -100,8 +106,6 @@ def main():
                     turret = Turret(turret_sprite, mouse_pos_ingrid, grid)
                     game_objects.append(turret)
                     grid.block_on_grid(mouse_pos_ingrid)
-                    print(game_objects)
-
         # TODO: Update all game objects
 
         # TODO: If enough time has passed to match the display frame rate
