@@ -57,6 +57,8 @@ class Turret(GameObject):
     def draw(self, screen: pygame.Surface):
         screen.blit(self.img, self.pos)
 
+    def update(self):
+        pass
 
 def draw(screen: pygame.Surface, game_objects: list[GameObject]):
     for go in game_objects:
