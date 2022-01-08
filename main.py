@@ -36,13 +36,14 @@ def main():
     grid = Grid(level=lvl)
 
     turret_sprite = pygame.image.load(Path('./images/turretPlaceholder.png'))
+    enemy_sprite = pygame.image.load(Path('./images/enemyPlaceholder.png'))
 
     game_objects: list[GameObject] = []
 
     # create a surface on screen that has the size of 240 x 180
     screen = pygame.display.set_mode(SCREEN_SIZE)
 
-    enemy1 = Enemy(turret_sprite, (0, 0), lvl.enemy_path)
+    enemy1 = Enemy(enemy_sprite, (0, 0), lvl.enemy_path)
     game_objects.append(enemy1)
 
     mouse_pos: tuple[int, int] = 0, 0
