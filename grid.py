@@ -1,5 +1,7 @@
 import pygame
+from pygame.math import Vector2
 from levelparser import Level
+from custom_types import CellPosition
 
 
 class Grid():
@@ -9,7 +11,7 @@ class Grid():
         self.cell_cnt_x = level.col_cnt
         self.cell_cnt_y = level.row_cnt
 
-        self.blocked_cells: list[tuple[int, int]] = level.blocked_positions
+        self.blocked_cells = level.blocked_positions
         self.path_cells = level.blocked_positions
         print(self.blocked_cells)
 
@@ -18,21 +20,21 @@ class Grid():
                        Grid.cell_width * self.cell_cnt_y)
 
     @staticmethod
-    def pos_to_cell(pos: tuple[int, int]) -> tuple[int, int]:
+    def pos_to_cell(pos: Vector2) -> CellPosition:
         return (int(pos[0] / Grid.cell_width), int(pos[1] / Grid.cell_width))
 
     @staticmethod
-    def cell_to_pos(cell_pos: tuple[int, int] | list[tuple[int, int]]) -> tuple[int, int] | list[tuple[int, int]]:
+    def cell_to_pos(cell_pos: CellPosition | list[CellPosition]) -> Vector2 | list[Vector2]:
         if not type(cell_pos) is list:
             return(cell_pos[0] * Grid.cell_width, cell_pos[1] * Grid.cell_width)
         else:
             return [Grid.cell_to_pos(elem) for elem in cell_pos]
 
-    def block_on_grid(self, cell_pos: tuple[int, int]):
+    def block_on_grid(self, cell_pos: CellPosition):
         if not cell_pos in self.blocked_cells:
             self.blocked_cells.append(cell_pos)
 
-    def is_blocked(self, cell_pos: tuple[int, int]):
+    def is_blocked(self, cell_pos: CellPosition):
         return cell_pos in self.blocked_cells
 
     def draw(self, screen: pygame.Surface):

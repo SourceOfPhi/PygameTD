@@ -1,16 +1,18 @@
 import pygame
+from pygame.math import Vector2
 from pathlib import Path
 from enemy import Enemy
 from grid import Grid
 from levelparser import Level, LevelParser
 from game_object import GameObject
+from custom_types import CellPosition
 
 # --- global constants ---
 SCREEN_SIZE = (800, 400)
 
 
 class Turret(GameObject):
-    def __init__(self, img: pygame.Surface, init_cell_pos: tuple[int, int]):
+    def __init__(self, img: pygame.Surface, init_cell_pos: CellPosition):
         self.img = pygame.transform.scale(img, (Grid.cell_width, Grid.cell_width))
         self.cell_pos = init_cell_pos
         self.pos = Grid.cell_to_pos(self.cell_pos)
@@ -46,7 +48,7 @@ def main():
     enemy1 = Enemy(enemy_sprite, (0, 0), lvl.enemy_path)
     game_objects.append(enemy1)
 
-    mouse_pos: tuple[int, int] = 0, 0
+    mouse_pos: Vector2 = (0, 0)
 
     # define a variable to control the main loop
     running = True

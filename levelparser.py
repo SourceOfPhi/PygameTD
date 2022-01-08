@@ -1,13 +1,14 @@
 from pathlib import Path
 from dataclasses import dataclass
+from custom_types import CellPosition
 
 
 @dataclass
 class Level():
     row_cnt: int
     col_cnt: int
-    enemy_path: list[tuple[int, int]]
-    blocked_positions: list[tuple[int, int]]
+    enemy_path: list[CellPosition]
+    blocked_positions: list[CellPosition]
 
 
 class LevelParser():
@@ -22,9 +23,9 @@ class LevelParser():
             highest_num = int(max([char for char in map_lines_all if char.isdigit()]))
             lowest_num = int(min([char for char in map_lines_all if char.isdigit()]))
             enemy_path_position_cnt = highest_num - lowest_num + 1
-            enemy_path_cell_positions: list[tuple[int, int]] = [(0, 0)] * enemy_path_position_cnt
+            enemy_path_cell_positions: list[CellPosition] = [(0, 0)] * enemy_path_position_cnt
 
-            blocked_cell_positions: list[tuple[int, int]] = []
+            blocked_cell_positions: list[CellPosition] = []
 
             for row, line in enumerate(map_lines):
                 for col, char in enumerate(line):
