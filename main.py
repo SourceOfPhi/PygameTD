@@ -1,5 +1,6 @@
 import pygame
 from pathlib import Path
+from enemy import Enemy
 from levelparser import Level, LevelParser
 from game_object import GameObject
 
@@ -75,10 +76,13 @@ def main():
 
     turret_sprite = pygame.image.load(Path('./images/turretPlaceholder.png'))
 
-    game_objects = []
+    game_objects: list[GameObject] = []
 
     # create a surface on screen that has the size of 240 x 180
     screen = pygame.display.set_mode(SCREEN_SIZE)
+
+    enemy1 = Enemy(turret_sprite, (0,0), lvl.enemy_path)
+    game_objects.append(enemy1)
 
     mouse_pos: tuple[int, int] = 0, 0
 
