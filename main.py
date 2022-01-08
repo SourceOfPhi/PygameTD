@@ -1,7 +1,7 @@
 import pygame
-from abc import ABC, abstractmethod
 from pathlib import Path
 from levelparser import Level, LevelParser
+from game_object import GameObject
 
 # --- global constants ---
 SCREEN_SIZE = (800, 400)
@@ -45,12 +45,6 @@ class Grid():
                 cell_pos = (x * self.cell_width, y * self.cell_width)
                 pygame.draw.rect(screen, color,
                                  pygame.Rect(cell_pos, (self.cell_width, self.cell_width)), width=width)
-
-
-class GameObject(ABC):
-    @abstractmethod
-    def draw(self, screen: pygame.Surface):
-        ...
 
 
 class Turret(GameObject):
