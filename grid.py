@@ -23,7 +23,7 @@ class Grid():
 
     @staticmethod
     def cell_to_pos(cell_pos: tuple[int, int] | list[tuple[int, int]]) -> tuple[int, int] | list[tuple[int, int]]:
-        if not type(cell_pos) is list[tuple[int, int]]:
+        if not type(cell_pos) is list:
             return(cell_pos[0] * Grid.cell_width, cell_pos[1] * Grid.cell_width)
         else:
             return [Grid.cell_to_pos(elem) for elem in cell_pos]
