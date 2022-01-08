@@ -1,5 +1,6 @@
 import pygame
 from game_object import GameObject
+from grid import Grid
 
 
 class Enemy(GameObject):
@@ -7,9 +8,9 @@ class Enemy(GameObject):
 
     def __init__(self, img: pygame.Surface, init_pos: tuple[int, int], path: list[tuple[int, int]]) -> None:
         self.position: tuple[float, float] = (float(init_pos[0]), float(init_pos[1]))
-        self.path = path
+        self.path = Grid.cell_to_pos(path)
         self.curr_path_idx = 0
-        self.target = path[0]
+        self.target = self.path[0]
         self.speed: float = 0.1
         self.img = img
 
