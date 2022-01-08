@@ -6,8 +6,8 @@ class Grid():
     cell_width: int = 50
 
     def __init__(self, level: Level) -> None:
-        self.cell_cnt_x = level.col_cnt  # int(SCREEN_SIZE[0] / cell_width)
-        self.cell_cnt_y = level.row_cnt  # int(SCREEN_SIZE[1] / cell_width)
+        self.cell_cnt_x = level.col_cnt
+        self.cell_cnt_y = level.row_cnt
 
         self.blocked_cells: list[tuple[int, int]] = level.blocked_positions
         self.path_cells = level.blocked_positions

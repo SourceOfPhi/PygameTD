@@ -68,7 +68,7 @@ def main():
                     turret = Turret(turret_sprite, mouse_pos_ingrid)
                     game_objects.append(turret)
                     grid.block_on_grid(mouse_pos_ingrid)
-        # TODO: Update all game objects
+        # Update all game objects
         for obj in game_objects:
             obj.update()
 
@@ -77,7 +77,6 @@ def main():
         grid.draw(screen)
         draw(screen, game_objects)
         pygame.display.update()
-        #draw(screen, game_objects)
 
 
 if __name__ == '__main__':
