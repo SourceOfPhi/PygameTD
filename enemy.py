@@ -18,7 +18,7 @@ class Enemy(GameObject):
         dist = pygame.math.Vector2(self.position).distance_to(self.target)
         if dist < Enemy.DIST_THRESH:
             self.curr_path_idx = self.curr_path_idx + 1
-            if self.curr_path_idx > len(self.path):
+            if self.curr_path_idx >= len(self.path):
                 print("Enemy reached end!")
                 return
             self.target = self.path[self.curr_path_idx]
