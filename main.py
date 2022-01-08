@@ -9,8 +9,9 @@ SCREEN_SIZE = (800, 400)
 
 
 class Grid():
-    def __init__(self, cell_width: int, level: Level) -> None:
-        self.cell_width = cell_width
+    cell_width: int = 50
+
+    def __init__(self, level: Level) -> None:
         self.cell_cnt_x = level.col_cnt  # int(SCREEN_SIZE[0] / cell_width)
         self.cell_cnt_y = level.row_cnt  # int(SCREEN_SIZE[1] / cell_width)
 
@@ -19,14 +20,16 @@ class Grid():
         print(self.blocked_cells)
 
         global SCREEN_SIZE
-        SCREEN_SIZE = (cell_width * self.cell_cnt_x,
-                       cell_width * self.cell_cnt_y)
+        SCREEN_SIZE = (Grid.cell_width * self.cell_cnt_x,
+                       Grid.cell_width * self.cell_cnt_y)
 
-    def pos_to_cell(self, pos: tuple[int, int]) -> tuple[int, int]:
-        return (int(pos[0] / self.cell_width), int(pos[1] / self.cell_width))
+    @staticmethod
+    def pos_to_cell(pos: tuple[int, int]) -> tuple[int, int]:
+        return (int(pos[0] / Grid.cell_width), int(pos[1] / Grid.cell_width))
 
-    def cell_to_pos(self, cell_pos: tuple[int, int]) -> tuple[int, int]:
-        return(cell_pos[0] * self.cell_width, cell_pos[1] * self.cell_width)
+    @staticmethod
+    def cell_to_pos(cell_pos: tuple[int, int]) -> tuple[int, int]:
+        return(cell_pos[0] * Grid.cell_width, cell_pos[1] * Grid.cell_width)
 
     def block_on_grid(self, cell_pos: tuple[int, int]):
         if not cell_pos in self.blocked_cells:
@@ -39,27 +42,26 @@ class Grid():
         for y in range(self.cell_cnt_y):
             for x in range(self.cell_cnt_x):
                 width = 1
-                color = (0,0,0)
-                if (x,y) in self.path_cells:
+                color = (0, 0, 0)
+                if (x, y) in self.path_cells:
                     width = 0
-                    color = (150,150,150)
-                cell_pos = (x * self.cell_width, y * self.cell_width)
-                pygame.draw.rect(screen, color,
-                                 pygame.Rect(cell_pos, (self.cell_width, self.cell_width)), width=width)
+                    color = (150, 150, 150)
+                cell_pos = (x * Grid.cell_width, y * Grid.cell_width)
+                pygame.draw.rect(screen, color, pygame.Rect(cell_pos, (Grid.cell_width, Grid.cell_width)), width=width)
 
 
 class Turret(GameObject):
-    def __init__(self, img: pygame.Surface, init_cell_pos: tuple[int, int], grid: Grid):
-        self.img = pygame.transform.scale(
-            img, (grid.cell_width, grid.cell_width))
+    def __init__(self, img: pygame.Surface, init_cell_pos: tuple[int, int]):
+        self.img = pygame.transform.scale(img, (Grid.cell_width, Grid.cell_width))
         self.cell_pos = init_cell_pos
-        self.pos = grid.cell_to_pos(self.cell_pos)
+        self.pos = Grid.cell_to_pos(self.cell_pos)
 
     def draw(self, screen: pygame.Surface):
         screen.blit(self.img, self.pos)
 
     def update(self):
         pass
+
 
 def draw(screen: pygame.Surface, game_objects: list[GameObject]):
     for go in game_objects:
@@ -72,7 +74,7 @@ def main():
 
     lvl = LevelParser().parse_txt("./maps/test1.txt")
 
-    grid = Grid(cell_width=50, level=lvl)
+    grid = Grid(level=lvl)
 
     turret_sprite = pygame.image.load(Path('./images/turretPlaceholder.png'))
 
@@ -81,7 +83,7 @@ def main():
     # create a surface on screen that has the size of 240 x 180
     screen = pygame.display.set_mode(SCREEN_SIZE)
 
-    enemy1 = Enemy(turret_sprite, (0,0), lvl.enemy_path)
+    enemy1 = Enemy(turret_sprite, (0, 0), lvl.enemy_path)
     game_objects.append(enemy1)
 
     mouse_pos: tuple[int, int] = 0, 0
@@ -100,10 +102,10 @@ def main():
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                mouse_pos_ingrid = grid.pos_to_cell(mouse_pos)
+                mouse_pos_ingrid = Grid.pos_to_cell(mouse_pos)
                 # TODO: if on this pos should be built
                 if not grid.is_blocked(mouse_pos_ingrid):
-                    turret = Turret(turret_sprite, mouse_pos_ingrid, grid)
+                    turret = Turret(turret_sprite, mouse_pos_ingrid)
                     game_objects.append(turret)
                     grid.block_on_grid(mouse_pos_ingrid)
         # TODO: Update all game objects
