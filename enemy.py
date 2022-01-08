@@ -15,7 +15,6 @@ class Enemy(GameObject):
 
     def update(self):
         dist = pygame.math.Vector2(self.position).distance_to(self.target)
-        print(dist)
         if dist < Enemy.DIST_THRESH:
             self.curr_path_idx = self.curr_path_idx + 1
             if self.curr_path_idx > len(self.path):
