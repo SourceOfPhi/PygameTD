@@ -103,6 +103,8 @@ def main():
                     game_objects.append(turret)
                     grid.block_on_grid(mouse_pos_ingrid)
         # TODO: Update all game objects
+        for obj in game_objects:
+            obj.update()
 
         # TODO: If enough time has passed to match the display frame rate
         # Draw all game objects
