@@ -12,7 +12,7 @@ class Enemy(GameObject):
         self.curr_path_idx = 0
         self.target = self.path[0]
         self.speed: float = 0.1
-        self.img = img
+        self.img = pygame.transform.scale(img, (20, 20))
 
     def update(self):
         dist = pygame.math.Vector2(self.position).distance_to(self.target)
