@@ -51,7 +51,7 @@ def main():
     # create a surface on screen that has the size of 240 x 180
     screen = pygame.display.set_mode(SCREEN_SIZE)
 
-    enemy1 = Enemy(enemy_sprite, (0, 0), lvl.enemy_path)
+    enemy1 = Enemy(enemy_sprite, lvl.enemy_path)
     game_objects.append(enemy1)
 
     mouse_pos: Vector2 = (0, 0)

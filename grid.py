@@ -26,7 +26,7 @@ class Grid():
     @staticmethod
     def cell_to_pos(cell_pos: CellPosition | list[CellPosition]) -> Vector2 | list[Vector2]:
         if not type(cell_pos) is list:
-            return(cell_pos[0] * Grid.cell_width, cell_pos[1] * Grid.cell_width)
+            return Vector2(cell_pos[0] * Grid.cell_width, cell_pos[1] * Grid.cell_width)
         else:
             return [Grid.cell_to_pos(elem) for elem in cell_pos]
 
