@@ -6,6 +6,7 @@ from grid import Grid
 from levelparser import Level, LevelParser
 from game_object import GameObject
 from custom_types import CellPosition
+from game_state import GameState
 
 # --- global constants ---
 SCREEN_SIZE = (800, 400)
@@ -23,6 +24,9 @@ class Turret(GameObject):
     def update(self):
         pass
 
+    def shall_be_removed(self) -> bool:
+        return False
+
 
 def draw(screen: pygame.Surface, game_objects: list[GameObject]):
     for go in game_objects:
@@ -36,6 +40,8 @@ def main():
     lvl = LevelParser().parse_txt("./maps/test1.txt")
 
     grid = Grid(level=lvl)
+
+    print(f"Lives: {GameState.lives}")
 
     turret_sprite = pygame.image.load(Path('./images/turretPlaceholder.png'))
     enemy_sprite = pygame.image.load(Path('./images/enemyPlaceholder.png'))
@@ -72,8 +78,14 @@ def main():
                     grid.block_on_grid(mouse_pos_ingrid)
         # Update all game objects
         for obj in game_objects:
-            obj.update()
+            if obj.shall_be_removed():
+                game_objects.remove(obj)
+            else:
+                obj.update()
 
+        if GameState.lives <= 0:
+            print("Game over.")
+            return
         # TODO: If enough time has passed to match the display frame rate
         # Draw all game objects
         grid.draw(screen)
