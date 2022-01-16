@@ -13,4 +13,3 @@ class GameState():
             new_ticks = pygame.time.get_ticks()
             GameState.Time.delta_time = new_ticks - GameState.Time.last_ticks
             GameState.Time.last_ticks = new_ticks
-            print(f"DeltaTime: {GameState.Time.delta_time}")
