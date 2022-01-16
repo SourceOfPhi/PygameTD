@@ -3,6 +3,7 @@ import pygame
 from game_object import GameObject
 from custom_types import CellPosition
 from grid import Grid
+from game_state import GameState
 
 
 class Turret(GameObject):
@@ -19,8 +20,10 @@ class Turret(GameObject):
 
     def update(self):
         if self.cool_down_current > 0:
-            #self.cool_down_current = self.cool_down_current - pygame.time.get_ticks
-            pass
+            self.cool_down_current = self.cool_down_current - GameState.Time.delta_time
+        else:
+            print("Turret shoots!")
+            self.cool_down_current = self.cool_down_time
 
     def shall_be_removed(self) -> bool:
         return False
