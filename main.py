@@ -61,6 +61,10 @@ def main():
                     turret = Turret(turret_sprite, mouse_pos_ingrid)
                     game_objects.append(turret)
                     grid.block_on_grid(mouse_pos_ingrid)
+
+        # Update the global time
+        GameState.Time.update()
+
         # Update all game objects
         for obj in game_objects:
             if obj.shall_be_removed():
