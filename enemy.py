@@ -18,6 +18,7 @@ class Enemy(GameObject):
         self.size = Vector2(20, 20)
         self.img = pygame.transform.scale(img, self.size)
         self.is_dead = False
+        self.health = 100.0  # TODO: This should be in e.g. a config file or organized somehow
 
     @property
     def tag(self):
@@ -64,3 +65,12 @@ class Enemy(GameObject):
 
     def shall_be_removed(self) -> bool:
         return self.is_dead
+
+    def take_damage(self, amount: float):
+        print(f"Enemy is taking damage: {amount}")
+        self.health = self.health - amount
+        if self.health < 0:
+            self.health = 0
+        if self.health <= 0:
+            print("Enemy was killed by turret")
+            self.is_dead = True

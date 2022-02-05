@@ -1,5 +1,6 @@
 import imp
 import pygame
+from enemy import Enemy
 from game_object import GameObject
 from custom_types import CellPosition
 from grid import Grid
@@ -18,6 +19,9 @@ class Turret(GameObject):
         # Store local ref to list of all game objects
         self.game_objects = game_objects
 
+        self.damage = 50.0  # TODO: This should be in a config file or organized somehow
+        self.range = 100.0  # TODO: This should be in a config file or organized somehow
+
     @property
     def tag(self):
         return 'Turret'
@@ -31,7 +35,7 @@ class Turret(GameObject):
 
     def update(self):
         # Look for enemies and calculate their current distance to the turret
-        enemies: list[tuple[GameObject, float]] = []
+        enemies: list[tuple[Enemy, float]] = []
         for go in self.game_objects:
             if go.tag == 'Enemy':
                 distance_to_enemy = self._pos.distance_to(go.pos)
@@ -40,8 +44,9 @@ class Turret(GameObject):
 
         if self.cool_down_current > 0:
             self.cool_down_current = self.cool_down_current - GameState.Time.delta_time
-        else:
+        elif len(enemies) != 0 and enemies[0][1] <= self.range:
             print("Turret shoots!")
+            enemies[0][0].take_damage(self.damage)
             self.cool_down_current = self.cool_down_time
 
     def shall_be_removed(self) -> bool:
