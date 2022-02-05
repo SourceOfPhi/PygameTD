@@ -8,6 +8,11 @@ class GameObject(ABC):
     def tag(self):
         ...
 
+    @property
+    @abstractmethod
+    def pos(self) -> pygame.Vector2:
+        ...
+
     @abstractmethod
     def update(self):
         ...

@@ -23,6 +23,10 @@ class Enemy(GameObject):
     def tag(self):
         return 'Enemy'
 
+    @property
+    def pos(self):
+        return self.position
+
     @staticmethod
     def calc_path_coords(path: list[CellPosition]) -> list[Vector2]:
         out_path = list[Vector2](Grid.cell_to_pos(path))

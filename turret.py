@@ -22,6 +22,10 @@ class Turret(GameObject):
     def tag(self):
         return 'Turret'
 
+    @property
+    def pos(self):
+        return self.pos
+
     def draw(self, screen: pygame.Surface):
         screen.blit(self.img, self.pos)
 
