@@ -15,6 +15,10 @@ class Turret(GameObject):
         self.cool_down_time = 1000  # ms
         self.cool_down_current = self.cool_down_time
 
+    @property
+    def tag(self):
+        return 'Turret'
+
     def draw(self, screen: pygame.Surface):
         screen.blit(self.img, self.pos)
 

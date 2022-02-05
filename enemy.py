@@ -19,6 +19,10 @@ class Enemy(GameObject):
         self.img = pygame.transform.scale(img, self.size)
         self.is_dead = False
 
+    @property
+    def tag(self):
+        return 'Enemy'
+
     @staticmethod
     def calc_path_coords(path: list[CellPosition]) -> list[Vector2]:
         out_path = list[Vector2](Grid.cell_to_pos(path))

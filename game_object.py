@@ -3,6 +3,11 @@ from abc import ABC, abstractmethod
 
 
 class GameObject(ABC):
+    @property
+    @abstractmethod
+    def tag(self):
+        ...
+
     @abstractmethod
     def update(self):
         ...
