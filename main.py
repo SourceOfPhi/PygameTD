@@ -58,7 +58,7 @@ def main():
                 mouse_pos_ingrid = Grid.pos_to_cell(mouse_pos)
                 # TODO: if on this pos should be built
                 if not grid.is_blocked(mouse_pos_ingrid):
-                    turret = Turret(turret_sprite, mouse_pos_ingrid)
+                    turret = Turret(turret_sprite, mouse_pos_ingrid, game_objects)
                     game_objects.append(turret)
                     grid.block_on_grid(mouse_pos_ingrid)
 
