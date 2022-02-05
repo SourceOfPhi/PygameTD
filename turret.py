@@ -10,7 +10,7 @@ class Turret(GameObject):
     def __init__(self, img: pygame.Surface, init_cell_pos: CellPosition, game_objects: list[GameObject]):
         self.img = pygame.transform.scale(img, (Grid.cell_width, Grid.cell_width))
         self.cell_pos = init_cell_pos
-        self.pos = Grid.cell_to_pos(self.cell_pos)
+        self._pos: pygame.Vector2 = Grid.cell_to_pos(self.cell_pos)
 
         self.cool_down_time = 1000  # ms
         self.cool_down_current = self.cool_down_time
@@ -24,12 +24,20 @@ class Turret(GameObject):
 
     @property
     def pos(self):
-        return self.pos
+        return self._pos
 
     def draw(self, screen: pygame.Surface):
-        screen.blit(self.img, self.pos)
+        screen.blit(self.img, self._pos)
 
     def update(self):
+        # Look for enemies and calculate their current distance to the turret
+        enemies: list[tuple[GameObject, float]] = []
+        for go in self.game_objects:
+            if go.tag == 'Enemy':
+                distance_to_enemy = self._pos.distance_to(go.pos)
+                enemies.append((go, distance_to_enemy))
+        enemies.sort(key=lambda elem: elem[1])
+
         if self.cool_down_current > 0:
             self.cool_down_current = self.cool_down_current - GameState.Time.delta_time
         else:
