@@ -8,6 +8,7 @@ from game_object import GameObject
 from custom_types import CellPosition
 from game_state import GameState
 from turret import Turret
+from spawner import Spawner
 
 # --- global constants ---
 SCREEN_SIZE = (800, 400)
@@ -36,8 +37,7 @@ def main():
     # create a surface on screen that has the size of 240 x 180
     screen = pygame.display.set_mode(SCREEN_SIZE)
 
-    enemy1 = Enemy(enemy_sprite, lvl.enemy_path)
-    game_objects.append(enemy1)
+    spawner = Spawner(10000.0, game_objects, lvl.enemy_path, enemy_sprite)
 
     mouse_pos: Vector2 = (0, 0)
 
@@ -64,6 +64,9 @@ def main():
 
         # Update the global time
         GameState.Time.update()
+
+        # Update the spawner
+        spawner.update()
 
         # Update all game objects
         for obj in game_objects:
