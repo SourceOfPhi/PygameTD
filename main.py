@@ -28,7 +28,7 @@ def main():
 
     print(f"Lives: {GameState.lives}")
 
-    turret_sprite = pygame.image.load(Path('./images/turretPlaceholder.png'))
+    turret_sprite = pygame.image.load(Path('./images/Turret1.png'))
     enemy_sprite = pygame.image.load(Path('./images/enemyPlaceholder.png'))
 
     game_objects: list[GameObject] = []
